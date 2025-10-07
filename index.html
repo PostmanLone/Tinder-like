@@ -74,6 +74,31 @@
     .cta{display:flex;gap:10px;justify-content:center;padding:12px}
     .apply{background:linear-gradient(135deg, var(--pink), #ff7aa2);border:0;color:white;padding:10px 14px;border-radius:14px;font-weight:700;cursor:pointer}
     .share{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff;padding:10px 14px;border-radius:14px;font-weight:600;cursor:pointer}
+    /* Selectable chips for Pros/Cons */
+    .pickwrap{padding:14px}
+    .subhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px 0}
+    .chip-toggle{display:inline-flex;align-items:flex-start;gap:6px;background:var(--chip);border:1px solid var(--chip-br);border-radius:12px;padding:8px 10px;margin:6px 6px 0 0;cursor:pointer;user-select:none;transition:transform .05s ease}
+    .chip-toggle:active{transform:scale(.98)}
+    .chip-toggle .title{font-weight:700;font-size:12px}
+    .chip-toggle .detail{font-size:12px;opacity:.85}
+    .chip-toggle.active{outline:2px solid rgba(59,130,246,.55);background:#121826}
+    .counts{font-size:12px;opacity:.8}
+    .tools{display:flex;gap:8px;margin-top:10px}
+    .tools .mini{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;padding:6px 10px;font-weight:600;cursor:pointer}
+    /* Dropdown menus for Pros/Cons */
+    .drop{position:relative;display:inline-block}
+    .dropbtn{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+    .menu{position:absolute;top:110%;left:0;min-width:280px;max-width:90vw;background:#0f1320;border:1px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:8px;display:none;z-index:20}
+    .menu.open{display:block}
+    .menu-title{font-size:12px;opacity:.8;padding:6px 8px}
+    .menu-item{display:flex;gap:8px;align-items:flex-start;padding:8px;border-radius:10px;cursor:pointer}
+    .menu-item:hover{background:rgba(255,255,255,.06)}
+    .check{width:18px;height:18px;border-radius:6px;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;flex-shrink:0}
+    .menu-item.active .check{background:#121d33;outline:2px solid rgba(59,130,246,.5)}
+    .menu-item .mtitle{font-weight:700;font-size:12px}
+    .menu-item .mdetail{font-size:12px;opacity:.85}
+    .menu-actions{display:flex;gap:8px;justify-content:flex-end;padding:8px}
+    .menu .mini{padding:6px 10px}
   </style>
 </head>
 <body>
@@ -88,16 +113,16 @@
       <div class="card">
         <div class="hero" id="hero" aria-live="polite">
           <!-- Swap your images here -->
-          <img src="images/pic1.jpg" alt="Her smiling" class="active"/>
-          <img src="images/pic2.jpg" alt="Surf day"/>
-          <img src="images/pic3.jpg" alt="Coffee date"/>
+          <img src="images/photo1.jpg" alt="Her smiling" class="active"/>
+          <img src="images/photo2.jpg" alt="Surf day"/>
+          <img src="images/photo3.jpg" alt="Coffee date"/>
           <div class="pager" id="pager"></div>
           <div class="overlay">
-            <div class="name">Sister Name, 24 <span class="badge" title="Verified profile"> 
+            <div class="name">Bernadette, 29 <span class="badge" title="Verified profile"> 
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 2 3-1 1 3 3 1-1 3 1 3-3 1-1 3-3-1-3 2-3-2-3 1-1-3-3-1 1-3-1-3 3-1 1-3 3 1 3-2z" opacity=".35"/><path d="M9 12l2 2 4-4"/></svg>
               Verified</span>
             </div>
-            <div class="prompt">I just realized… time isn’t real. But dinner at 7 is. Don’t be late 😄</div>
+            <div class="prompt">Skrt give me 500</div>
           </div>
         </div>
 
@@ -112,7 +137,7 @@
         <div class="section">
           <h3>About me</h3>
           <div class="list">
-            <div class="row">My entire closet is thrifted. Certified secondhand diva 🛍️</div>
+            <div class="row">Her closet is thrifted. Certified secondhand diva 🛍️</div>
             <div class="row">Hardworking, goal‑driven, and a Pisces with premium mood DLC ♓</div>
           </div>
         </div>
@@ -121,20 +146,20 @@
           <h3>Interests</h3>
           <div class="chips" id="chips">
             <span class="chip">Painting</span>
-            <span class="chip">Surfing</span>
-            <span class="chip">Indie</span>
+            <span class="chip">Singing</span>
+            <span class="chip">Adventure</span>
             <span class="chip">Beach</span>
             <span class="chip">Animals</span>
-            <span class="chip">Pilates</span>
-            <span class="chip">Running</span>
+            <span class="chip">Walking</span>
+            <span class="chip">K-Pop</span>
           </div>
         </div>
 
         <div class="section">
-          <h3>My weekends</h3>
+          <h3>Her weekends</h3>
           <div class="chips">
             <span class="chip">Recharging</span>
-            <span class="chip">Cozy night in</span>
+            <span class="chip">Impromptu Plans</span>
             <span class="chip">Self‑care</span>
           </div>
         </div>
@@ -147,21 +172,28 @@
           </div>
         <div class="section">
           <h3>🧑‍🤝‍🧑 Pros & Cons (Brother’s View)</h3>
-          <div class="list">
-            <div class="row"><strong>🌟 Pros — Patient (most of the time):</strong>&nbsp;She tries to give people the benefit of the doubt and can really stick things out.</div>
-            <div class="row"><strong>🌟 Caring & Selfless:</strong>&nbsp;My sister will put her partner’s needs before her own. Sometimes too much — but it shows how genuine she is.</div>
-            <div class="row"><strong>🌟 Family‑Oriented:</strong>&nbsp;She’ll never forget her roots. She wants her partner to feel like family, not just “a boyfriend.”</div>
-            <div class="row"><strong>🌟 Hardworking & Goal‑Driven:</strong>&nbsp;She’s not lazy. She’s always grinding for her goals and expects her partner to be on the same page.</div>
-            <div class="row"><strong>🌟 Romantic & Loyal (Pisces vibes):</strong>&nbsp;She’s the type to go all in. If she loves you, she’s 100% committed — no halfway.</div>
-            <div class="row"><strong>🌟 Supportive:</strong>&nbsp;She’ll hype her partner up and stand by them in tough times.</div>
-            <div class="row"><strong>🌟 Fun & Imaginative:</strong>&nbsp;She can make boring things feel exciting. Dates with her aren’t basic — she adds her own twist.</div>
-            <div class="row"><strong>⚖️ Cons — Patient but Also Impatient:</strong>&nbsp;She tries to wait things out but when her fuse runs out, it really runs out.</div>
-            <div class="row"><strong>⚖️ Sensitive:</strong>&nbsp;You say the wrong thing, she’ll take it to heart. She feels deeply, which can sometimes make little problems bigger than they are.</div>
-            <div class="row"><strong>⚖️ Selfless to a Fault:</strong>&nbsp;She gives so much that she risks being taken advantage of.</div>
-            <div class="row"><strong>⚖️ Work Comes First Sometimes:</strong>&nbsp;When she’s locked in on her goals, she can unintentionally push her relationship to the side.</div>
-            <div class="row"><strong>⚖️ Conflict Avoidance:</strong>&nbsp;She doesn’t like fighting. Sometimes she’ll hold things in instead of speaking up.</div>
-            <div class="row"><strong>⚖️ Idealistic in Love:</strong>&nbsp;She has high expectations of how things should be in a relationship — and if it doesn’t match her vision, she gets frustrated.</div>
-            <div class="row"><strong>⚖️ Mood Shifts:</strong>&nbsp;She’s a Pisces. Enough said. (One day chill, next day emotional).</div>
+          <div class="pickwrap">
+            <div class="subhead"><strong>🌟 Pros</strong></div>
+            <div class="list" id="prosList">
+              <div class="row"><strong>Patient (most of the time):</strong>&nbsp;She tries to give people the benefit of the doubt and can really stick things out.</div>
+              <div class="row"><strong>Caring & Selfless:</strong>&nbsp;She’ll put her partner’s needs before her own. Sometimes too much — but it shows how genuine she is.</div>
+              <div class="row"><strong>Family‑Oriented:</strong>&nbsp;She’ll never forget her roots. She wants her partner to feel like family, not just “a boyfriend.”</div>
+              <div class="row"><strong>Hardworking & Goal‑Driven:</strong>&nbsp;She’s always grinding for her goals and expects her partner to be on the same page.</div>
+              <div class="row"><strong>Romantic & Loyal (Pisces vibes):</strong>&nbsp;She’s the type to go all in. If she loves you, she’s 100% committed — no halfway.</div>
+              <div class="row"><strong>Supportive:</strong>&nbsp;She’ll hype her partner up and stand by them in tough times.</div>
+              <div class="row"><strong>Fun & Imaginative:</strong>&nbsp;She can make boring things feel exciting. Dates with her aren’t basic — she adds her own twist.</div>
+            </div>
+
+            <div class="subhead" style="margin-top:14px"><strong>⚖️ Cons</strong></div>
+            <div class="list" id="consList">
+              <div class="row"><strong>Patient but Also Impatient:</strong>&nbsp;She tries to wait things out but when her fuse runs out, it really runs out.</div>
+              <div class="row"><strong>Sensitive:</strong>&nbsp;You say the wrong thing, she’ll take it to heart. She feels deeply, which can sometimes make little problems bigger than they are.</div>
+              <div class="row"><strong>Selfless to a Fault:</strong>&nbsp;She gives so much that she risks being taken advantage of.</div>
+              <div class="row"><strong>Work Comes First Sometimes:</strong>&nbsp;When she’s locked in on her goals, she can unintentionally push her relationship to the side.</div>
+              <div class="row"><strong>Conflict Avoidance:</strong>&nbsp;She doesn’t like fighting. Sometimes she’ll hold things in instead of speaking up.</div>
+              <div class="row"><strong>Idealistic in Love:</strong>&nbsp;She has high expectations of how things should be in a relationship — and if it doesn’t match her vision, she gets frustrated.</div>
+              <div class="row"><strong>Mood Shifts:</strong>&nbsp;She’s a Pisces. Enough said. (One day chill, next day emotional).</div>
+            </div>
           </div>
         </div>
 
@@ -224,6 +256,9 @@
     const subject = encodeURIComponent('Dating Application: Sister');
     const body = encodeURIComponent(`Hi Brother,\n\nI\'d like to apply to date your sister. Here are my details:\n- Name:\n- Age:\n- What I do:\n- Love language:\n- Best first date idea:\n\nWhy I\'m a good match:\n\n— Sent from the Sister Swipe Site`);
     const applyBtn = document.getElementById('applyBtn');
+    applyBtn.href = `${email}?subject=${subject}&body=${body}`;
+
+    // (removed dropdown) — pros/cons now visible like Tinder lists
     applyBtn.href = `${email}?subject=${subject}&body=${body}`;
   </script>
 </body>
