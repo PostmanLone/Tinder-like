@@ -33,13 +33,30 @@
     .wrap{min-height:100svh;display:grid;place-items:center;padding:18px}
 
     /* Phone frame */
-    .phone{width:390px;max-width:100%;border-radius:34px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+    .phone{
+      width:390px;max-width:100%;
+      border-radius:34px;overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      /* NEW: mobile-friendly layout */
+      height:760px;
+      display:flex;
+      flex-direction:column;
+    }
     .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.35);backdrop-filter: blur(8px)}
     .tinder{display:flex;align-items:center;gap:8px;font-weight:800}
     .tinder .dot{width:10px;height:10px;border-radius:50%;background:var(--pink)}
 
     /* Card */
-    .card{position:relative}
+    .card{
+      position:relative;
+      /* NEW: let content scroll within the phone */
+      flex:1;
+      min-height:0;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .hero{position:relative;aspect-ratio:9/16;background:#0f1118;overflow:hidden}
     .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s ease}
     .hero img.active{opacity:1}
@@ -61,7 +78,11 @@
     .row{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:10px;border-radius:12px;font-size:14px}
 
     /* Action bar */
-    .actions{position:sticky;bottom:0;background:rgba(10,10,13,.85);backdrop-filter: blur(8px);display:flex;justify-content:space-between;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.06)}
+    .actions{
+      position:sticky;bottom:0; /* stays visible while scrolling */
+      background:rgba(10,10,13,.85);backdrop-filter: blur(8px);
+      display:flex;justify-content:space-between;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.06)
+    }
     .btn{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:none;cursor:pointer}
     .btn svg{width:26px;height:26px}
     .rewind{background:#1a1410;border:1px solid rgba(245,158,11,.35)}
@@ -74,31 +95,28 @@
     .cta{display:flex;gap:10px;justify-content:center;padding:12px}
     .apply{background:linear-gradient(135deg, var(--pink), #ff7aa2);border:0;color:white;padding:10px 14px;border-radius:14px;font-weight:700;cursor:pointer}
     .share{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff;padding:10px 14px;border-radius:14px;font-weight:600;cursor:pointer}
-    /* Selectable chips for Pros/Cons */
+
+    /* Pros/Cons lists */
     .pickwrap{padding:14px}
     .subhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px 0}
-    .chip-toggle{display:inline-flex;align-items:flex-start;gap:6px;background:var(--chip);border:1px solid var(--chip-br);border-radius:12px;padding:8px 10px;margin:6px 6px 0 0;cursor:pointer;user-select:none;transition:transform .05s ease}
-    .chip-toggle:active{transform:scale(.98)}
-    .chip-toggle .title{font-weight:700;font-size:12px}
-    .chip-toggle .detail{font-size:12px;opacity:.85}
-    .chip-toggle.active{outline:2px solid rgba(59,130,246,.55);background:#121826}
-    .counts{font-size:12px;opacity:.8}
-    .tools{display:flex;gap:8px;margin-top:10px}
-    .tools .mini{background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#fff;padding:6px 10px;font-weight:600;cursor:pointer}
-    /* Dropdown menus for Pros/Cons */
-    .drop{position:relative;display:inline-block}
-    .dropbtn{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 12px;border-radius:12px;font-weight:700;cursor:pointer}
-    .menu{position:absolute;top:110%;left:0;min-width:280px;max-width:90vw;background:#0f1320;border:1px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35);padding:8px;display:none;z-index:20}
-    .menu.open{display:block}
-    .menu-title{font-size:12px;opacity:.8;padding:6px 8px}
-    .menu-item{display:flex;gap:8px;align-items:flex-start;padding:8px;border-radius:10px;cursor:pointer}
-    .menu-item:hover{background:rgba(255,255,255,.06)}
-    .check{width:18px;height:18px;border-radius:6px;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;flex-shrink:0}
-    .menu-item.active .check{background:#121d33;outline:2px solid rgba(59,130,246,.5)}
-    .menu-item .mtitle{font-weight:700;font-size:12px}
-    .menu-item .mdetail{font-size:12px;opacity:.85}
-    .menu-actions{display:flex;gap:8px;justify-content:flex-end;padding:8px}
-    .menu .mini{padding:6px 10px}
+
+    /* Mobile full-screen behavior */
+    @media (max-width:520px){
+      .wrap{ padding:0; }
+      .phone{
+        width:100vw;
+        height:100svh;    /* safe viewport height */
+        border-radius:0;  /* edge-to-edge */
+      }
+      .hero{
+        aspect-ratio:auto;
+        height:58vh;      /* big photo area like Tinder */
+      }
+      .actions{
+        position:sticky;
+        bottom:0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -129,7 +147,7 @@
         <div class="section">
           <h3>Looking for</h3>
           <div class="chips">
-            <span class="chip">Long‑term partner</span>
+            <span class="chip">Long-term partner</span>
             <span class="chip">Family oriented</span>
           </div>
         </div>
@@ -138,7 +156,7 @@
           <h3>About me</h3>
           <div class="list">
             <div class="row">Her closet is thrifted. Certified secondhand diva 🛍️</div>
-            <div class="row">Hardworking, goal‑driven, and a Pisces with premium mood DLC ♓</div>
+            <div class="row">Hardworking, goal-driven, and a Pisces with premium mood DLC ♓</div>
           </div>
         </div>
 
@@ -160,7 +178,7 @@
           <div class="chips">
             <span class="chip">Recharging</span>
             <span class="chip">Impromptu Plans</span>
-            <span class="chip">Self‑care</span>
+            <span class="chip">Self-care</span>
           </div>
         </div>
 
@@ -170,6 +188,8 @@
             <span class="chip">Zodiac: Pisces</span>
             <span class="chip">Education: Bachelors</span>
           </div>
+        </div> <!-- FIXED: close Basics section -->
+
         <div class="section">
           <h3>🧑‍🤝‍🧑 Pros & Cons (Brother’s View)</h3>
           <div class="pickwrap">
@@ -177,8 +197,8 @@
             <div class="list" id="prosList">
               <div class="row"><strong>Patient (most of the time):</strong>&nbsp;She tries to give people the benefit of the doubt and can really stick things out.</div>
               <div class="row"><strong>Caring & Selfless:</strong>&nbsp;She’ll put her partner’s needs before her own. Sometimes too much — but it shows how genuine she is.</div>
-              <div class="row"><strong>Family‑Oriented:</strong>&nbsp;She’ll never forget her roots. She wants her partner to feel like family, not just “a boyfriend.”</div>
-              <div class="row"><strong>Hardworking & Goal‑Driven:</strong>&nbsp;She’s always grinding for her goals and expects her partner to be on the same page.</div>
+              <div class="row"><strong>Family-Oriented:</strong>&nbsp;She’ll never forget her roots. She wants her partner to feel like family, not just “a boyfriend.”</div>
+              <div class="row"><strong>Hardworking & Goal-Driven:</strong>&nbsp;She’s always grinding for her goals and expects her partner to be on the same page.</div>
               <div class="row"><strong>Romantic & Loyal (Pisces vibes):</strong>&nbsp;She’s the type to go all in. If she loves you, she’s 100% committed — no halfway.</div>
               <div class="row"><strong>Supportive:</strong>&nbsp;She’ll hype her partner up and stand by them in tough times.</div>
               <div class="row"><strong>Fun & Imaginative:</strong>&nbsp;She can make boring things feel exciting. Dates with her aren’t basic — she adds her own twist.</div>
@@ -256,9 +276,6 @@
     const subject = encodeURIComponent('Dating Application: Sister');
     const body = encodeURIComponent(`Hi Brother,\n\nI\'d like to apply to date your sister. Here are my details:\n- Name:\n- Age:\n- What I do:\n- Love language:\n- Best first date idea:\n\nWhy I\'m a good match:\n\n— Sent from the Sister Swipe Site`);
     const applyBtn = document.getElementById('applyBtn');
-    applyBtn.href = `${email}?subject=${subject}&body=${body}`;
-
-    // (removed dropdown) — pros/cons now visible like Tinder lists
     applyBtn.href = `${email}?subject=${subject}&body=${body}`;
   </script>
 </body>
