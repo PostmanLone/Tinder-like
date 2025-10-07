@@ -39,7 +39,7 @@
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.08);
       box-shadow:var(--shadow);
-      /* NEW: mobile-friendly layout */
+      /* mobile-friendly layout */
       height:760px;
       display:flex;
       flex-direction:column;
@@ -48,14 +48,13 @@
     .tinder{display:flex;align-items:center;gap:8px;font-weight:800}
     .tinder .dot{width:10px;height:10px;border-radius:50%;background:var(--pink)}
 
-    /* Card */
     .card{
       position:relative;
-      /* NEW: let content scroll within the phone */
       flex:1;
       min-height:0;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(120px + env(safe-area-inset-bottom));
     }
     .hero{position:relative;aspect-ratio:9/16;background:#0f1118;overflow:hidden}
     .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s ease}
@@ -77,12 +76,14 @@
     .list{display:grid;gap:10px}
     .row{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:10px;border-radius:12px;font-size:14px}
 
-    /* Action bar */
     .actions{
-      position:sticky;bottom:0; /* stays visible while scrolling */
+      position:sticky;bottom:0;
       background:rgba(10,10,13,.85);backdrop-filter: blur(8px);
-      display:flex;justify-content:space-between;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.06)
+      display:flex;justify-content:space-between;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.06);
+      z-index:10;
+      pointer-events:none;
     }
+    .actions .btn{ pointer-events:auto; }
     .btn{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:none;cursor:pointer}
     .btn svg{width:26px;height:26px}
     .rewind{background:#1a1410;border:1px solid rgba(245,158,11,.35)}
@@ -91,26 +92,23 @@
     .like{background:#0f1a14;border:1px solid rgba(34,197,94,.35)}
     .boost{background:#161020;border:1px solid rgba(168,85,247,.35)}
 
-    /* Footer CTA */
     .cta{display:flex;gap:10px;justify-content:center;padding:12px}
     .apply{background:linear-gradient(135deg, var(--pink), #ff7aa2);border:0;color:white;padding:10px 14px;border-radius:14px;font-weight:700;cursor:pointer}
     .share{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff;padding:10px 14px;border-radius:14px;font-weight:600;cursor:pointer}
 
-    /* Pros/Cons lists */
     .pickwrap{padding:14px}
     .subhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px 0}
 
-    /* Mobile full-screen behavior */
     @media (max-width:520px){
       .wrap{ padding:0; }
       .phone{
         width:100vw;
-        height:100svh;    /* safe viewport height */
-        border-radius:0;  /* edge-to-edge */
+        height:100svh;    
+        border-radius:0;  
       }
       .hero{
         aspect-ratio:auto;
-        height:58vh;      /* big photo area like Tinder */
+        height:58vh;     
       }
       .actions{
         position:sticky;
@@ -127,10 +125,8 @@
         <div style="opacity:.75;font-size:12px">Brother edition</div>
       </div>
 
-      <!-- Profile Card -->
       <div class="card">
         <div class="hero" id="hero" aria-live="polite">
-          <!-- Swap your images here -->
           <img src="images/photo1.jpg" alt="Her smiling" class="active"/>
           <img src="images/photo2.jpg" alt="Surf day"/>
           <img src="images/photo3.jpg" alt="Coffee date"/>
@@ -188,7 +184,7 @@
             <span class="chip">Zodiac: Pisces</span>
             <span class="chip">Education: Bachelors</span>
           </div>
-        </div> <!-- FIXED: close Basics section -->
+        </div>
 
         <div class="section">
           <h3>🧑‍🤝‍🧑 Pros & Cons (Brother’s View)</h3>
@@ -216,10 +212,8 @@
             </div>
           </div>
         </div>
-
       </div>
 
-      <!-- Action bar like Tinder -->
       <div class="actions">
         <button class="btn rewind" id="rewind" title="Rewind">
           <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 19l-7-7 7-7"/><path d="M5 12h14" opacity=".6"/></svg>
@@ -246,7 +240,6 @@
   </div>
 
   <script>
-    // ===== Image pager =====
     const imgs = Array.from(document.querySelectorAll('.hero img'));
     const pager = document.getElementById('pager');
     let index = 0;
@@ -255,7 +248,6 @@
     document.getElementById('hero').addEventListener('click', ()=> show((index+1)%imgs.length));
     renderBars();
 
-    // ===== Fake actions (toasts) =====
     const actions = {rewind:'Rewinded (fake)', nope:'Nope (be nice)', super:'Super like ⭐', like:'Like sent ❤', boost:'Boosted ⚡'};
     Object.keys(actions).forEach(id=>{
       const el = document.getElementById(id);
@@ -265,14 +257,12 @@
       const t=document.createElement('div'); t.textContent=msg; t.style.position='fixed'; t.style.bottom='22px'; t.style.left='50%'; t.style.transform='translateX(-50%)'; t.style.background='rgba(0,0,0,.85)'; t.style.padding='10px 14px'; t.style.borderRadius='12px'; t.style.border='1px solid rgba(255,255,255,.12)'; t.style.zIndex=99; t.style.fontWeight='700'; document.body.appendChild(t); setTimeout(()=>{t.style.opacity=.0; t.style.transition='opacity .45s'},1200); setTimeout(()=>t.remove(),1700);
     }
 
-    // ===== Share & Mailto =====
     document.getElementById('shareBtn').addEventListener('click', async ()=>{
       const shareData = {title:'Swipe Right On My Sister', text:'Brother-approved profile', url: location.href};
       try{ if(navigator.share){ await navigator.share(shareData);} else { await navigator.clipboard.writeText(location.href); toast('Link copied'); } }catch(e){ toast('Share canceled') }
     });
 
-    // Update this email to yours
-    const email = 'mailto:your-email@example.com';
+    const email = 'mailto:lquianzon@gmail.com';
     const subject = encodeURIComponent('Dating Application: Sister');
     const body = encodeURIComponent(`Hi Brother,\n\nI\'d like to apply to date your sister. Here are my details:\n- Name:\n- Age:\n- What I do:\n- Love language:\n- Best first date idea:\n\nWhy I\'m a good match:\n\n— Sent from the Sister Swipe Site`);
     const applyBtn = document.getElementById('applyBtn');
