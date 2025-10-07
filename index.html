@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Swipe Right On My Sister</title>
+  <meta name="description" content="A playful, Tinder-like landing page built by her brother. Apply within." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-grad: radial-gradient(1400px 900px at -10% -10%, #ff2d55, transparent 40%),
+                  radial-gradient(1200px 900px at 110% 110%, #7a7dff, transparent 40%),
+                  #0b0b10;
+      --text:#f5f6fb;
+      --muted:#aab1c5;
+      --card:#101217;
+      --chip:#171a21;
+      --chip-br:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.12);
+      --shadow:0 24px 70px rgba(0,0,0,.5);
+      --green:#22c55e;
+      --red:#ef4444;
+      --blue:#3b82f6;
+      --yellow:#f59e0b;
+      --purple:#a855f7;
+      --pink:#ff2d55;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg-grad);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";}
+    a{color:var(--pink)}
+    .wrap{min-height:100svh;display:grid;place-items:center;padding:18px}
+
+    /* Phone frame */
+    .phone{width:390px;max-width:100%;border-radius:34px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.35);backdrop-filter: blur(8px)}
+    .tinder{display:flex;align-items:center;gap:8px;font-weight:800}
+    .tinder .dot{width:10px;height:10px;border-radius:50%;background:var(--pink)}
+
+    /* Card */
+    .card{position:relative}
+    .hero{position:relative;aspect-ratio:9/16;background:#0f1118;overflow:hidden}
+    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s ease}
+    .hero img.active{opacity:1}
+    .hero .pager{position:absolute;top:10px;left:0;right:0;display:flex;gap:6px;padding:0 10px}
+    .hero .pager .bar{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.25)}
+    .hero .pager .bar.active{background:linear-gradient(90deg, #fff, #d1d5db)}
+    .overlay{position:absolute;inset:auto 0 0 0;padding:16px;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.6) 60%, rgba(0,0,0,.85))}
+    .name{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800}
+    .badge{display:inline-flex;gap:6px;align-items:center;background:rgba(59,130,246,.18);border:1px solid rgba(59,130,246,.35);color:#cfe3ff;padding:4px 8px;border-radius:999px;font-size:12px}
+    .prompt{margin-top:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px}
+
+    /* Tabs/info */
+    .section{padding:14px}
+    .section h3{margin:0 0 8px 0;font-size:14px;font-weight:700;color:#e6e9f3}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{background:var(--chip);border:1px solid var(--chip-br);border-radius:999px;padding:6px 10px;font-size:12px;color:#d9deee}
+
+    .list{display:grid;gap:10px}
+    .row{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:10px;border-radius:12px;font-size:14px}
+
+    /* Action bar */
+    .actions{position:sticky;bottom:0;background:rgba(10,10,13,.85);backdrop-filter: blur(8px);display:flex;justify-content:space-between;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.06)}
+    .btn{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:none;cursor:pointer}
+    .btn svg{width:26px;height:26px}
+    .rewind{background:#1a1410;border:1px solid rgba(245,158,11,.35)}
+    .nope{background:#1a1010;border:1px solid rgba(239,68,68,.35)}
+    .super{background:#0f1622;border:1px solid rgba(59,130,246,.35)}
+    .like{background:#0f1a14;border:1px solid rgba(34,197,94,.35)}
+    .boost{background:#161020;border:1px solid rgba(168,85,247,.35)}
+
+    /* Footer CTA */
+    .cta{display:flex;gap:10px;justify-content:center;padding:12px}
+    .apply{background:linear-gradient(135deg, var(--pink), #ff7aa2);border:0;color:white;padding:10px 14px;border-radius:14px;font-weight:700;cursor:pointer}
+    .share{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff;padding:10px 14px;border-radius:14px;font-weight:600;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="phone" role="application" aria-label="Sister profile">
+      <div class="topbar">
+        <div class="tinder"><span class="dot"></span> <span>Tinder-ish</span></div>
+        <div style="opacity:.75;font-size:12px">Brother edition</div>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="card">
+        <div class="hero" id="hero" aria-live="polite">
+          <!-- Swap your images here -->
+          <img src="images/pic1.jpg" alt="Her smiling" class="active"/>
+          <img src="images/pic2.jpg" alt="Surf day"/>
+          <img src="images/pic3.jpg" alt="Coffee date"/>
+          <div class="pager" id="pager"></div>
+          <div class="overlay">
+            <div class="name">Sister Name, 24 <span class="badge" title="Verified profile"> 
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 2 3-1 1 3 3 1-1 3 1 3-3 1-1 3-3-1-3 2-3-2-3 1-1-3-3-1 1-3-1-3 3-1 1-3 3 1 3-2z" opacity=".35"/><path d="M9 12l2 2 4-4"/></svg>
+              Verified</span>
+            </div>
+            <div class="prompt">I just realized… time isn’t real. But dinner at 7 is. Don’t be late 😄</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Looking for</h3>
+          <div class="chips">
+            <span class="chip">Long‑term partner</span>
+            <span class="chip">Family oriented</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>About me</h3>
+          <div class="list">
+            <div class="row">My entire closet is thrifted. Certified secondhand diva 🛍️</div>
+            <div class="row">Hardworking, goal‑driven, and a Pisces with premium mood DLC ♓</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Interests</h3>
+          <div class="chips" id="chips">
+            <span class="chip">Painting</span>
+            <span class="chip">Surfing</span>
+            <span class="chip">Indie</span>
+            <span class="chip">Beach</span>
+            <span class="chip">Animals</span>
+            <span class="chip">Pilates</span>
+            <span class="chip">Running</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>My weekends</h3>
+          <div class="chips">
+            <span class="chip">Recharging</span>
+            <span class="chip">Cozy night in</span>
+            <span class="chip">Self‑care</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Basics</h3>
+          <div class="chips">
+            <span class="chip">Zodiac: Pisces</span>
+            <span class="chip">Education: Bachelors</span>
+          </div>
+        <div class="section">
+          <h3>🧑‍🤝‍🧑 Pros & Cons (Brother’s View)</h3>
+          <div class="list">
+            <div class="row"><strong>🌟 Pros — Patient (most of the time):</strong>&nbsp;She tries to give people the benefit of the doubt and can really stick things out.</div>
+            <div class="row"><strong>🌟 Caring & Selfless:</strong>&nbsp;My sister will put her partner’s needs before her own. Sometimes too much — but it shows how genuine she is.</div>
+            <div class="row"><strong>🌟 Family‑Oriented:</strong>&nbsp;She’ll never forget her roots. She wants her partner to feel like family, not just “a boyfriend.”</div>
+            <div class="row"><strong>🌟 Hardworking & Goal‑Driven:</strong>&nbsp;She’s not lazy. She’s always grinding for her goals and expects her partner to be on the same page.</div>
+            <div class="row"><strong>🌟 Romantic & Loyal (Pisces vibes):</strong>&nbsp;She’s the type to go all in. If she loves you, she’s 100% committed — no halfway.</div>
+            <div class="row"><strong>🌟 Supportive:</strong>&nbsp;She’ll hype her partner up and stand by them in tough times.</div>
+            <div class="row"><strong>🌟 Fun & Imaginative:</strong>&nbsp;She can make boring things feel exciting. Dates with her aren’t basic — she adds her own twist.</div>
+            <div class="row"><strong>⚖️ Cons — Patient but Also Impatient:</strong>&nbsp;She tries to wait things out but when her fuse runs out, it really runs out.</div>
+            <div class="row"><strong>⚖️ Sensitive:</strong>&nbsp;You say the wrong thing, she’ll take it to heart. She feels deeply, which can sometimes make little problems bigger than they are.</div>
+            <div class="row"><strong>⚖️ Selfless to a Fault:</strong>&nbsp;She gives so much that she risks being taken advantage of.</div>
+            <div class="row"><strong>⚖️ Work Comes First Sometimes:</strong>&nbsp;When she’s locked in on her goals, she can unintentionally push her relationship to the side.</div>
+            <div class="row"><strong>⚖️ Conflict Avoidance:</strong>&nbsp;She doesn’t like fighting. Sometimes she’ll hold things in instead of speaking up.</div>
+            <div class="row"><strong>⚖️ Idealistic in Love:</strong>&nbsp;She has high expectations of how things should be in a relationship — and if it doesn’t match her vision, she gets frustrated.</div>
+            <div class="row"><strong>⚖️ Mood Shifts:</strong>&nbsp;She’s a Pisces. Enough said. (One day chill, next day emotional).</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action bar like Tinder -->
+      <div class="actions">
+        <button class="btn rewind" id="rewind" title="Rewind">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 19l-7-7 7-7"/><path d="M5 12h14" opacity=".6"/></svg>
+        </button>
+        <button class="btn nope" id="nope" title="Nope">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <button class="btn super" id="super" title="Super like">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M12 3l3 6 6 .9-4.5 4.3 1.1 6.8L12 18l-5.6 3 1.1-6.8L3 9.9 9 9l3-6z"/></svg>
+        </button>
+        <button class="btn like" id="like" title="Like">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#86efac" stroke-width="2"><path d="M20.8 8.6a5.5 5.5 0 0 0-9.8-3.6l-1 1-1-1A5.5 5.5 0 1 0 3.2 16l8.8 5.3L20.8 16a5.5 5.5 0 0 0 0-7.4z"/></svg>
+        </button>
+        <button class="btn boost" id="boost" title="Boost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        </button>
+      </div>
+
+      <div class="cta">
+        <button class="share" id="shareBtn">Share</button>
+        <a class="apply" id="applyBtn" href="#">Apply to Date</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Image pager =====
+    const imgs = Array.from(document.querySelectorAll('.hero img'));
+    const pager = document.getElementById('pager');
+    let index = 0;
+    function renderBars(){ pager.innerHTML = imgs.map((_,i)=>`<div class="bar ${i===index?'active':''}"></div>`).join(''); }
+    function show(i){ imgs.forEach((im,k)=>im.classList.toggle('active', k===i)); index = i; renderBars(); }
+    document.getElementById('hero').addEventListener('click', ()=> show((index+1)%imgs.length));
+    renderBars();
+
+    // ===== Fake actions (toasts) =====
+    const actions = {rewind:'Rewinded (fake)', nope:'Nope (be nice)', super:'Super like ⭐', like:'Like sent ❤', boost:'Boosted ⚡'};
+    Object.keys(actions).forEach(id=>{
+      const el = document.getElementById(id);
+      el.addEventListener('click', ()=> toast(actions[id]));
+    });
+    function toast(msg){
+      const t=document.createElement('div'); t.textContent=msg; t.style.position='fixed'; t.style.bottom='22px'; t.style.left='50%'; t.style.transform='translateX(-50%)'; t.style.background='rgba(0,0,0,.85)'; t.style.padding='10px 14px'; t.style.borderRadius='12px'; t.style.border='1px solid rgba(255,255,255,.12)'; t.style.zIndex=99; t.style.fontWeight='700'; document.body.appendChild(t); setTimeout(()=>{t.style.opacity=.0; t.style.transition='opacity .45s'},1200); setTimeout(()=>t.remove(),1700);
+    }
+
+    // ===== Share & Mailto =====
+    document.getElementById('shareBtn').addEventListener('click', async ()=>{
+      const shareData = {title:'Swipe Right On My Sister', text:'Brother-approved profile', url: location.href};
+      try{ if(navigator.share){ await navigator.share(shareData);} else { await navigator.clipboard.writeText(location.href); toast('Link copied'); } }catch(e){ toast('Share canceled') }
+    });
+
+    // Update this email to yours
+    const email = 'mailto:your-email@example.com';
+    const subject = encodeURIComponent('Dating Application: Sister');
+    const body = encodeURIComponent(`Hi Brother,\n\nI\'d like to apply to date your sister. Here are my details:\n- Name:\n- Age:\n- What I do:\n- Love language:\n- Best first date idea:\n\nWhy I\'m a good match:\n\n— Sent from the Sister Swipe Site`);
+    const applyBtn = document.getElementById('applyBtn');
+    applyBtn.href = `${email}?subject=${subject}&body=${body}`;
+  </script>
+</body>
+</html>
